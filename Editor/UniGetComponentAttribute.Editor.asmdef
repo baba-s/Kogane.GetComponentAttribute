@@ -1,0 +1,17 @@
+{
+    "name": "UniGetComponentAttribute.Editor",
+    "references": [
+        "GUID:f755904dd4e9c0e499f993933bc6d79d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
