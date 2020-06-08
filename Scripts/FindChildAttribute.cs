@@ -5,7 +5,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace UniGetComponentAttribute
+namespace Kogane
 {
 	/// <summary>
 	/// Transform.Find を実行する Attribute

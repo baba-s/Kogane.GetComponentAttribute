@@ -5,7 +5,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace UniGetComponentAttribute
+namespace Kogane
 {
 	/// <summary>
 	/// GetComponentInChildren を実行する Attribute

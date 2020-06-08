@@ -7,7 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UniGetComponentAttribute.Internal
+namespace Kogane.Internal
 {
 	/// <summary>
 	/// GetComponentAttribute 付きの変数に参照を割り当てるクラス

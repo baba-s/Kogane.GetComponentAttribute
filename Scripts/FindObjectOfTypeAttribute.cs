@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UniGetComponentAttribute
+namespace Kogane
 {
 	/// <summary>
 	/// Object.FindObjectOfType を実行する Attribute

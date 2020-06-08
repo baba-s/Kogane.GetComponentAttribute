@@ -1,11 +1,11 @@
-# Uni Get Component Attribute
+﻿# Uni Get Component Attribute
 
 シリアライズ対象の変数に自動で参照を割り当てるエディタ拡張
 
 ## 使用例
 
 ```cs
-using UniGetComponentAttribute;
+using Kogane;
 using UnityEngine;
 
 public class Test : MonoBehaviour
