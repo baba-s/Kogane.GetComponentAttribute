@@ -16,9 +16,31 @@ namespace Kogane
 		Attribute,
 		IGetComponentAttribute
 	{
+#if UNITY_2020_1_OR_NEWER
+		//================================================================================
+		// 変数(readonly)
+		//================================================================================
+		private readonly bool m_includeInactive;
+
 		//================================================================================
 		// 関数
 		//================================================================================
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		public FindObjectOfTypeAttribute() : this( false )
+		{
+		}
+
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		public FindObjectOfTypeAttribute( bool includeInactive )
+		{
+			m_includeInactive = includeInactive;
+		}
+#endif
+
 #if UNITY_EDITOR
 		/// <summary>
 		/// 指定されたパラメータに参照を割り当てます
@@ -30,8 +52,13 @@ namespace Kogane
 			SerializedProperty serializedProperty
 		)
 		{
+#if UNITY_2020_1_OR_NEWER
+			serializedProperty.objectReferenceValue =
+				Object.FindObjectOfType( fieldInfo.FieldType, m_includeInactive );
+#else
 			serializedProperty.objectReferenceValue =
 				Object.FindObjectOfType( fieldInfo.FieldType );
+#endif
 		}
 #endif
 	}
