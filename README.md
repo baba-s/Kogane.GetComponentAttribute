@@ -1,4 +1,4 @@
-﻿# Uni Get Component Attribute
+﻿# Kogane Get Component Attribute
 
 シリアライズ対象の変数に自動で参照を割り当てるエディタ拡張
 
@@ -29,13 +29,13 @@ public class Test : MonoBehaviour
 ```
 
 * GetComponent などの属性をシリアライズ対象の変数に適用すると  
-下記のタイミングで自動で参照が割り当てられるようになります  
-    * スクリプトがコンパイルされた時  
-    * シーンファイルを開いた時  
-    * コンポーネントがアタッチされた時  
-    * Unity を再生した時  
+  下記のタイミングで自動で参照が割り当てられるようになります
+    * スクリプトがコンパイルされた時
+    * シーンファイルを開いた時
+    * コンポーネントがアタッチされた時
+    * Unity を再生した時
 * MonoBehaviour のコンテキストメニューから「UniGetComponentAttribute > Inject」を選択すると  
-手動で参照を割り当てることも可能です  
+  手動で参照を割り当てることも可能です
 
 ## 属性の説明
 
@@ -89,9 +89,9 @@ public sealed class MyGetComponentAttribute :
 ```
 
 * Attribute クラスを継承して IGetComponentAttribute インターフェイスを定義すると  
-参照割り当て機能を自作することができます  
+  参照割り当て機能を自作することができます
 
 ## 補足
 
-* GetComponents 系の関数は List&lt;T&gt; には対応していません  
+* GetComponents 系の関数は List&lt;T&gt; には対応していません
     * 配列にのみ対応しています  
