@@ -28,7 +28,7 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInParentOnlyAttribute() : this( false )
+        public GetComponentsInParentOnlyAttribute() : this( true )
         {
         }
 

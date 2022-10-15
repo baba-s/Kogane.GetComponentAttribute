@@ -28,7 +28,7 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindObjectsOfTypeAttribute() : this( false )
+        public FindObjectsOfTypeAttribute() : this( true )
         {
         }
 

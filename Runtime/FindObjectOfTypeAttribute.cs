@@ -29,7 +29,7 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindObjectOfTypeAttribute() : this( false )
+        public FindObjectOfTypeAttribute() : this( true )
         {
         }
 
