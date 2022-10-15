@@ -1,3 +1,16 @@
-﻿{
-    "name": "Kogane.GetComponentAttribute.Runtime"
+{
+    "name": "Kogane.GetComponentAttribute.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f16a3dbbadc8a104782ade423f1e3201"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

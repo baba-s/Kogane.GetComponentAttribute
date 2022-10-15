@@ -4,6 +4,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 #endif
 
@@ -53,13 +54,12 @@ namespace Kogane
             SerializedProperty serializedProperty
         )
         {
-#if UNITY_2020_1_OR_NEWER
-            serializedProperty.objectReferenceValue =
-                Object.FindObjectOfType( fieldInfo.FieldType, m_includeInactive );
-#else
-			serializedProperty.objectReferenceValue =
-				Object.FindObjectOfType( fieldInfo.FieldType );
-#endif
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            var fieldType   = fieldInfo.FieldType;
+
+            serializedProperty.objectReferenceValue = prefabStage != null
+                ? prefabStage.FindComponentOfType( fieldType )
+                : Object.FindObjectOfType( fieldType, m_includeInactive );
         }
 #endif
     }
