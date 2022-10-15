@@ -58,8 +58,9 @@ namespace Kogane
             var fieldType   = fieldInfo.FieldType;
 
             serializedProperty.objectReferenceValue = prefabStage != null
-                ? prefabStage.FindComponentOfType( fieldType )
-                : Object.FindObjectOfType( fieldType, m_includeInactive );
+                    ? prefabStage.FindComponentOfType( fieldType )
+                    : Object.FindObjectOfType( fieldType, m_includeInactive )
+                ;
         }
 #endif
     }

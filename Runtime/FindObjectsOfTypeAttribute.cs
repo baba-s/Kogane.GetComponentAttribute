@@ -3,6 +3,7 @@ using System.Reflection;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 #endif
 
@@ -52,13 +53,15 @@ namespace Kogane
             SerializedProperty serializedProperty
         )
         {
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var fieldType   = fieldInfo.FieldType;
             var elementType = fieldType.GetElementType();
-#if UNITY_2020_1_OR_NEWER
-            var components = UnityEngine.Object.FindObjectsOfType( elementType, m_includeInactive );
-#else
-			var components = UnityEngine.Object.FindObjectsOfType( elementType );
-#endif
+
+            var components = prefabStage != null
+                    ? prefabStage.FindComponentsOfType( elementType )
+                    : UnityEngine.Object.FindObjectsOfType( elementType, m_includeInactive )
+                ;
+
             var componentCount = components.Length;
 
             serializedProperty.arraySize = componentCount;
