@@ -57,7 +57,7 @@ namespace Kogane
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var fieldType   = fieldInfo.FieldType;
 
-            serializedProperty.objectReferenceValue = prefabStage != null
+            serializedProperty.objectReferenceValue = prefabStage != null && prefabStage.IsPartOfPrefabContents( monoBehaviour.gameObject )
                     ? prefabStage.FindComponentOfType( fieldType )
                     : Object.FindObjectOfType( fieldType, m_includeInactive )
                 ;
