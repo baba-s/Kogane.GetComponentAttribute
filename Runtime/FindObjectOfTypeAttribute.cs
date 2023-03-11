@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -13,7 +13,7 @@ namespace Kogane
     /// <summary>
     /// Object.FindObjectOfType を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class FindObjectOfTypeAttribute
         : Attribute,
           IGetComponentAttribute
@@ -30,14 +30,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindObjectOfTypeAttribute() : this( true )
+        public FindObjectOfTypeAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindObjectOfTypeAttribute( bool includeInactive )
+        public FindObjectOfTypeAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -49,17 +49,17 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-            var fieldType   = fieldInfo.FieldType;
+            var fieldType = fieldInfo.FieldType;
 
-            serializedProperty.objectReferenceValue = prefabStage != null && prefabStage.IsPartOfPrefabContents( monoBehaviour.gameObject )
-                    ? prefabStage.FindComponentOfType( fieldType )
-                    : Object.FindObjectOfType( fieldType, m_includeInactive )
+            serializedProperty.objectReferenceValue = prefabStage != null && prefabStage.IsPartOfPrefabContents(monoBehaviour.gameObject)
+                    ? prefabStage.scene.GetRootGameObjects()[0].GetComponentInChildren(fieldType, m_includeInactive)
+                    : Object.FindObjectOfType(fieldType, m_includeInactive)
                 ;
         }
 #endif
