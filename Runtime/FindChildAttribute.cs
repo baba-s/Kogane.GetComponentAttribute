@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -11,7 +11,7 @@ namespace Kogane
     /// <summary>
     /// Transform.Find を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class FindChildAttribute
         : Attribute,
           IGetComponentAttribute
@@ -27,7 +27,7 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindChildAttribute( string name )
+        public FindChildAttribute(string name)
         {
             m_name = name;
         }
@@ -38,12 +38,17 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
-            serializedProperty.objectReferenceValue = monoBehaviour.transform.Find( m_name );
+            if (serializedProperty.isArray)
+            {
+                return;
+            }
+
+            serializedProperty.objectReferenceValue = monoBehaviour.transform.Find(m_name);
         }
 #endif
     }

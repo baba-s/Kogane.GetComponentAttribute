@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -12,7 +13,7 @@ namespace Kogane
     /// <summary>
     /// Object.FindObjectsOfType を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class FindObjectsOfTypeAttribute
         : Attribute,
           IGetComponentAttribute
@@ -29,14 +30,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindObjectsOfTypeAttribute() : this( true )
+        public FindObjectsOfTypeAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindObjectsOfTypeAttribute( bool includeInactive )
+        public FindObjectsOfTypeAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -48,28 +49,33 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
+            if (!serializedProperty.isArray)
+            {
+                return;
+            }
+
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-            var fieldType   = fieldInfo.FieldType;
-            var elementType = fieldType.GetElementType();
+            var fieldType = fieldInfo.FieldType;
+            var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();
 
             var components = prefabStage != null
-                    ? prefabStage.FindComponentsOfType( elementType )
-                    : UnityEngine.Object.FindObjectsOfType( elementType, m_includeInactive )
+                    ? prefabStage.scene.GetRootGameObjects()[0].GetComponentsInChildren(elementType, m_includeInactive)
+                    : UnityEngine.Object.FindObjectsOfType(elementType, m_includeInactive)
                 ;
 
             var componentCount = components.Length;
 
             serializedProperty.arraySize = componentCount;
 
-            for ( var i = 0; i < componentCount; i++ )
+            for (var i = 0; i < componentCount; i++)
             {
-                var element   = serializedProperty.GetArrayElementAtIndex( i );
-                var component = components[ i ];
+                var element = serializedProperty.GetArrayElementAtIndex(i);
+                var component = components[i];
 
                 element.objectReferenceValue = component;
             }

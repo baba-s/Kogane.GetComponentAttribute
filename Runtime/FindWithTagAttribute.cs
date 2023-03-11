@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -11,7 +11,7 @@ namespace Kogane
     /// <summary>
     /// GameObject.FindWithTag を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class FindWithTagAttribute
         : Attribute,
           IGetComponentAttribute
@@ -27,7 +27,7 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public FindWithTagAttribute( string tag )
+        public FindWithTagAttribute(string tag)
         {
             m_tag = tag;
         }
@@ -38,12 +38,17 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
-            serializedProperty.objectReferenceValue = GameObject.FindWithTag( m_tag );
+            if (serializedProperty.isArray)
+            {
+                return;
+            }
+
+            serializedProperty.objectReferenceValue = GameObject.FindWithTag(m_tag);
         }
 #endif
     }

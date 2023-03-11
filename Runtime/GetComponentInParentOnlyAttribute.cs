@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace Kogane
     /// <summary>
     /// 自分自身は対象にしない GetComponentInParent を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class GetComponentInParentOnlyAttribute
         : Attribute,
           IGetComponentAttribute
@@ -28,14 +28,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentInParentOnlyAttribute() : this( true )
+        public GetComponentInParentOnlyAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentInParentOnlyAttribute( bool includeInactive )
+        public GetComponentInParentOnlyAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -46,14 +46,19 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
+            if (serializedProperty.isArray)
+            {
+                return;
+            }
+
             serializedProperty.objectReferenceValue = monoBehaviour
-                    .GetComponentsInParent( fieldInfo.FieldType, m_includeInactive )
-                    .FirstOrDefault( x => x.gameObject != monoBehaviour.gameObject )
+                    .GetComponentsInParent(fieldInfo.FieldType, m_includeInactive)
+                    .FirstOrDefault(x => x.gameObject != monoBehaviour.gameObject)
                 ;
         }
 #endif

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -11,7 +11,7 @@ namespace Kogane
     /// <summary>
     /// GetComponentInChildren を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class GetComponentInChildrenAttribute
         : Attribute,
           IGetComponentAttribute
@@ -27,14 +27,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentInChildrenAttribute() : this( true )
+        public GetComponentInChildrenAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentInChildrenAttribute( bool includeInactive )
+        public GetComponentInChildrenAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -45,13 +45,18 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
+            if (serializedProperty.isArray)
+            {
+                return;
+            }
+
             serializedProperty.objectReferenceValue =
-                monoBehaviour.GetComponentInChildren( fieldInfo.FieldType, m_includeInactive );
+                monoBehaviour.GetComponentInChildren(fieldInfo.FieldType, m_includeInactive);
         }
 #endif
     }
