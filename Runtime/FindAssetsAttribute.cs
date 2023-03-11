@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace Kogane
     /// <summary>
     /// AssetDatabase.FindAssets を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class FindAssetsAttribute
         : Attribute,
           IGetComponentAttribute
@@ -27,20 +27,20 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
             var guid = AssetDatabase
-                    .FindAssets( $"t:{fieldInfo.FieldType.Name}" )
+                    .FindAssets($"t:{fieldInfo.FieldType.Name}")
                     .FirstOrDefault()
                 ;
 
-            if ( string.IsNullOrWhiteSpace( guid ) ) return;
+            if (string.IsNullOrWhiteSpace(guid)) return;
 
-            var assetPath = AssetDatabase.GUIDToAssetPath( guid );
-            var asset     = AssetDatabase.LoadAssetAtPath<Object>( assetPath );
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
             serializedProperty.objectReferenceValue = asset;
         }

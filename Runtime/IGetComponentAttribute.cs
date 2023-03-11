@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,8 +21,8 @@ namespace Kogane
         /// </summary>
         void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         );
 #endif

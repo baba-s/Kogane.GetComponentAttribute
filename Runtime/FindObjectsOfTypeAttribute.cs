@@ -54,6 +54,11 @@ namespace Kogane
             SerializedProperty serializedProperty
         )
         {
+            if (!serializedProperty.isArray)
+            {
+                return;
+            }
+
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var fieldType = fieldInfo.FieldType;
             var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();

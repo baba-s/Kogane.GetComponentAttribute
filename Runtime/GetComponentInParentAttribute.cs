@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -11,7 +11,7 @@ namespace Kogane
     /// <summary>
     /// GetComponentInParent を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class GetComponentInParentAttribute
         : Attribute,
           IGetComponentAttribute
@@ -25,13 +25,18 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
+            if (serializedProperty.isArray)
+            {
+                return;
+            }
+
             serializedProperty.objectReferenceValue =
-                monoBehaviour.GetComponentInParent( fieldInfo.FieldType );
+                monoBehaviour.GetComponentInParent(fieldInfo.FieldType);
         }
 #endif
     }

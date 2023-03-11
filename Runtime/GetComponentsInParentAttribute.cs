@@ -51,8 +51,14 @@ namespace Kogane
             SerializedProperty serializedProperty
         )
         {
+            if (!serializedProperty.isArray)
+            {
+                return;
+            }
+
             var fieldType = fieldInfo.FieldType;
             var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();
+
             var components = monoBehaviour.GetComponentsInParent(elementType, m_includeInactive);
             var componentCount = components.Length;
 
