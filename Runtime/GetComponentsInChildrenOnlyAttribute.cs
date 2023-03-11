@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace Kogane
     /// <summary>
     /// 自分自身は対象にしない GetComponentsInChildren を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class GetComponentsInChildrenOnlyAttribute
         : Attribute,
           IGetComponentAttribute
@@ -28,14 +28,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInChildrenOnlyAttribute() : this( true )
+        public GetComponentsInChildrenOnlyAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInChildrenOnlyAttribute( bool includeInactive )
+        public GetComponentsInChildrenOnlyAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -46,17 +46,17 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
-            var fieldType   = fieldInfo.FieldType;
-            var elementType = fieldType.GetElementType();
+            var fieldType = fieldInfo.FieldType;
+            var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();
 
             var components = monoBehaviour
-                    .GetComponentsInChildren( elementType, m_includeInactive )
-                    .Where( x => x.gameObject != monoBehaviour.gameObject )
+                    .GetComponentsInChildren(elementType, m_includeInactive)
+                    .Where(x => x.gameObject != monoBehaviour.gameObject)
                     .ToArray()
                 ;
 
@@ -64,10 +64,10 @@ namespace Kogane
 
             serializedProperty.arraySize = componentCount;
 
-            for ( var i = 0; i < componentCount; i++ )
+            for (var i = 0; i < componentCount; i++)
             {
-                var element   = serializedProperty.GetArrayElementAtIndex( i );
-                var component = components[ i ];
+                var element = serializedProperty.GetArrayElementAtIndex(i);
+                var component = components[i];
 
                 element.objectReferenceValue = component;
             }

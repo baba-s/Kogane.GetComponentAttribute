@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -11,7 +12,7 @@ namespace Kogane
     /// <summary>
     /// GetComponentsInParent を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class GetComponentsInParentAttribute
         : Attribute,
           IGetComponentAttribute
@@ -27,14 +28,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInParentAttribute() : this( true )
+        public GetComponentsInParentAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInParentAttribute( bool includeInactive )
+        public GetComponentsInParentAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -45,22 +46,22 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
-            var fieldType      = fieldInfo.FieldType;
-            var elementType    = fieldType.GetElementType();
-            var components     = monoBehaviour.GetComponentsInParent( elementType, m_includeInactive );
+            var fieldType = fieldInfo.FieldType;
+            var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();
+            var components = monoBehaviour.GetComponentsInParent(elementType, m_includeInactive);
             var componentCount = components.Length;
 
             serializedProperty.arraySize = componentCount;
 
-            for ( var i = 0; i < componentCount; i++ )
+            for (var i = 0; i < componentCount; i++)
             {
-                var element   = serializedProperty.GetArrayElementAtIndex( i );
-                var component = components[ i ];
+                var element = serializedProperty.GetArrayElementAtIndex(i);
+                var component = components[i];
 
                 element.objectReferenceValue = component;
             }

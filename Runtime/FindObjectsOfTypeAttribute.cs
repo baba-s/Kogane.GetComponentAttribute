@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -55,7 +56,7 @@ namespace Kogane
         {
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var fieldType = fieldInfo.FieldType;
-            var elementType = fieldType.GetElementType();
+            var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();
 
             var components = prefabStage != null
                     ? prefabStage.scene.GetRootGameObjects()[0].GetComponentsInChildren(elementType, m_includeInactive)

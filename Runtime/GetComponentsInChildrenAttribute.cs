@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -11,7 +12,7 @@ namespace Kogane
     /// <summary>
     /// GetComponentsInChildren を実行する Attribute
     /// </summary>
-    [AttributeUsage( AttributeTargets.Field )]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class GetComponentsInChildrenAttribute
         : Attribute,
           IGetComponentAttribute
@@ -27,14 +28,14 @@ namespace Kogane
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInChildrenAttribute() : this( true )
+        public GetComponentsInChildrenAttribute() : this(true)
         {
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GetComponentsInChildrenAttribute( bool includeInactive )
+        public GetComponentsInChildrenAttribute(bool includeInactive)
         {
             m_includeInactive = includeInactive;
         }
@@ -45,27 +46,27 @@ namespace Kogane
         /// </summary>
         public void Inject
         (
-            MonoBehaviour      monoBehaviour,
-            FieldInfo          fieldInfo,
+            MonoBehaviour monoBehaviour,
+            FieldInfo fieldInfo,
             SerializedProperty serializedProperty
         )
         {
-            var fieldType   = fieldInfo.FieldType;
-            var elementType = fieldType.GetElementType();
+            var fieldType = fieldInfo.FieldType;
+            var elementType = fieldType.GetElementType() ?? fieldType.GetGenericArguments().SingleOrDefault();
 
             // 配列やリストではないフィールドに GetComponentsInChildrenAttribute を付けると
             // elementType が null になる
-            if ( elementType == null ) return;
+            if (elementType == null) return;
 
-            var components     = monoBehaviour.GetComponentsInChildren( elementType, m_includeInactive );
+            var components = monoBehaviour.GetComponentsInChildren(elementType, m_includeInactive);
             var componentCount = components.Length;
 
             serializedProperty.arraySize = componentCount;
 
-            for ( var i = 0; i < componentCount; i++ )
+            for (var i = 0; i < componentCount; i++)
             {
-                var element   = serializedProperty.GetArrayElementAtIndex( i );
-                var component = components[ i ];
+                var element = serializedProperty.GetArrayElementAtIndex(i);
+                var component = components[i];
 
                 element.objectReferenceValue = component;
             }
